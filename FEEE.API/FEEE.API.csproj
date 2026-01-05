@@ -6,4 +6,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+    <Folder Include="Controllers\" />
+    <Folder Include="Middlewares\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FEEE.Application\FEEE.Application.csproj" />
+    <ProjectReference Include="..\FEEE.Infrastructure\FEEE.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

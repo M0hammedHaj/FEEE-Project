@@ -1,5 +1,5 @@
 ﻿using FEEE.Infrastructure.Extensions;
-// using Microsoft.OpenApi.Models; // Remove this line as it is not needed unless you use OpenApi models directly
+
 using Swashbuckle.AspNetCore.SwaggerGen; // Add this using directive if needed
 using Swashbuckle.AspNetCore.SwaggerUI; // Add this using directive
 

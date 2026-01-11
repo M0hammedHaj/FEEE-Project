@@ -1,4 +1,5 @@
-﻿using FEEE.Domain.Models;
+﻿using FEEE.Domain.Enums;
+using FEEE.Domain.Models;
 using FEEE.Domain.Repositories;
 using FEEE.Infrastructure.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -34,7 +35,7 @@ namespace FEEE.Infrastructure.Persistence.Repositories
                     CityId = s.CityId,
                     SectionId = s.SectionId,
                     YearId = s.YearId,
-                    Status = s.Status
+                    Status = (StudentStatus)s.Status
                 })
                 .ToListAsync();
         }
@@ -58,7 +59,7 @@ namespace FEEE.Infrastructure.Persistence.Repositories
                 CityId = student.CityId,
                 SectionId = student.SectionId,
                 YearId = student.YearId,
-                Status = student.Status
+                Status = (StudentStatus)student.Status
             };
         }
 
@@ -75,7 +76,7 @@ namespace FEEE.Infrastructure.Persistence.Repositories
                 CityId = model.CityId,
                 SectionId = model.SectionId,
                 YearId = model.YearId,
-                Status = model.Status
+                Status = (byte)model.Status   
             };
 
             _context.Students.Add(entity);
@@ -85,7 +86,6 @@ namespace FEEE.Infrastructure.Persistence.Repositories
         public async Task UpdateAsync(StudentModel model)
         {
             var entity = await _context.Students.FindAsync(model.StudentId);
-
             if (entity == null)
                 return;
 
@@ -98,7 +98,7 @@ namespace FEEE.Infrastructure.Persistence.Repositories
             entity.CityId = model.CityId;
             entity.SectionId = model.SectionId;
             entity.YearId = model.YearId;
-            entity.Status = model.Status;
+            entity.Status = (byte)model.Status; 
 
             await _context.SaveChangesAsync();
         }

@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace FEEE.Application.UseCases.HigherYearRequests.GetHigherYearRequestsService
 {
-    public class GetHigherYearRequestsService
+    public class GetAllHigherYearRequestsService
     {
         private readonly IHigherYearRequestRepository _repo;
 
-        public GetHigherYearRequestsService(IHigherYearRequestRepository repo)
+        public GetAllHigherYearRequestsService(IHigherYearRequestRepository repo)
         {
             _repo = repo;
         }

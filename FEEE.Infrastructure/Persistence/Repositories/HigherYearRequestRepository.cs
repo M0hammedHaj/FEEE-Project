@@ -186,12 +186,77 @@ public class HigherYearRequestRepository : IHigherYearRequestRepository
 
         if (entity == null) return false;
 
-        // احذف الربط أولاً (إذا ما عندك Cascade Delete مضبوط)
+        // deleting the related HigherYearRequestSubjects
         _context.HigherYearRequestSubjects.RemoveRange(entity.HigherYearRequestSubjects);
 
         _context.HigherYearRequests.Remove(entity);
         await _context.SaveChangesAsync();
         return true;
     }
+    public async Task<List<HigherYearRequestListItemDto>> GetListAsync(
+    HigherYearRequestFilterDto filter)
+    {
+        var query = _context.HigherYearRequests
+            .Include(x => x.Student)
+            .Include(x => x.Section)
+            .Include(x => x.Year)
+            .AsQueryable();
+
+        if (filter.SectionId.HasValue)
+            query = query.Where(x => x.SectionId == filter.SectionId);
+
+        if (filter.YearId.HasValue)
+            query = query.Where(x => x.YearId == filter.YearId);
+
+        if (filter.Status.HasValue)
+            query = query.Where(x => x.Status == filter.Status.Value);
+
+        if (!string.IsNullOrEmpty(filter.StudentName))
+            query = query.Where(x =>
+                (x.Student.FirstName + " " + x.Student.LastName)
+                .Contains(filter.StudentName));
+
+        if (!string.IsNullOrEmpty(filter.UniversityNumber))
+            query = query.Where(x =>
+                x.Student.UniversityNumber.Contains(filter.UniversityNumber));
+
+        if (filter.FromDate.HasValue)
+        {
+            var from = filter.FromDate.Value.Date; 
+            query = query.Where(x => x.CreatedAt >= from);
+        }
+
+        if (filter.ToDate.HasValue)
+        {
+            var to = filter.ToDate.Value.Date.AddDays(1); 
+            query = query.Where(x => x.CreatedAt < to);
+        }
+        if (filter.Date.HasValue)
+        {
+            var dayStart = filter.Date.Value.Date;
+            var dayEnd = dayStart.AddDays(1);
+
+            query = query.Where(x =>
+                x.CreatedAt  >= dayStart &&
+                x.CreatedAt < dayEnd
+            );
+        }
+
+
+        return await query
+            .Select(x => new HigherYearRequestListItemDto
+            {
+                RequestId = x.Id,
+                StudentName = x.Student.FirstName + " " + x.Student.LastName,
+                UniversityNumber = x.Student.UniversityNumber,
+                Section = x.Section.Name,
+                Year = x.Year.Name,
+                Status = x.Status.ToString(),
+                RequestDate = x.CreatedAt,
+                Date = x.CreatedAt.Date
+            })
+            .ToListAsync();
+    }
+
 
 }

@@ -1,6 +1,7 @@
 ﻿using FEEE.Application.DTOs.HigherYearRequests;
 using FEEE.Application.UseCases.HigherYearRequests.CancelHigherYearRequestService;
 using FEEE.Application.UseCases.HigherYearRequests.CreateHigherYearRequestServices;
+using FEEE.Application.UseCases.HigherYearRequests.GetFilterHigherYearRequestListService;
 using FEEE.Application.UseCases.HigherYearRequests.GetHigherYearRequestByIdUseCase;
 using FEEE.Application.UseCases.HigherYearRequests.GetHigherYearRequestsService;
 using FEEE.Application.UseCases.HigherYearRequests.UpdateHigherYearRequestService;
@@ -14,20 +15,23 @@ namespace FEEE.API.Controllers
     public class HigherYearRequestsController : ControllerBase
     {
         private readonly CreateHigherYearRequestService _service;
-        private readonly GetHigherYearRequestsService _getAllService;
+        private readonly GetAllHigherYearRequestsService _getAllService;
         private readonly GetHigherYearRequestByIdUseCase _getById;
         private readonly UpdateHigherYearRequestService _updateService;
         private readonly CancelHigherYearRequestService _deleteService;
+        private readonly GetFilterHigherYearRequestListService _filterService;
 
-
-        public HigherYearRequestsController(CreateHigherYearRequestService service,GetHigherYearRequestsService getallservice,
-            GetHigherYearRequestByIdUseCase getbyid, UpdateHigherYearRequestService updateservice, CancelHigherYearRequestService cancelHigherYearRequestService)
+        public HigherYearRequestsController(CreateHigherYearRequestService service,GetAllHigherYearRequestsService getallservice,
+            GetHigherYearRequestByIdUseCase getbyid, UpdateHigherYearRequestService updateservice,
+            CancelHigherYearRequestService cancelHigherYearRequestService,
+            GetFilterHigherYearRequestListService getFilterHigherYearRequestListService)
         {
             _service = service;
             _getAllService = getallservice;
             _getById = getbyid;
             _updateService = updateservice;
             _deleteService = cancelHigherYearRequestService;
+            _filterService = getFilterHigherYearRequestListService;
         }
 
         [HttpPost]
@@ -64,6 +68,12 @@ namespace FEEE.API.Controllers
             var ok = await _deleteService.ExecuteAsync(id);
             if (!ok) return NotFound();
             return NoContent();
+        }
+        [HttpGet("Filter")]
+        public async Task<IActionResult> GetList([FromQuery] HigherYearRequestFilterDto filter)
+        {
+            var result = await _filterService.ExecuteAsync(filter);
+            return Ok(result);
         }
 
 

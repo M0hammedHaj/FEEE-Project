@@ -17,6 +17,7 @@ namespace FEEE.Application.Interfaces
         Task<bool> UpdateAsync(HigherYearRequestModel model);
         Task<bool> CancelAsync(int requestId);
         Task<HigherYearRequestModel?> GetByIdForUpdateAsync(int id);
-
+        Task<List<HigherYearRequestListItemDto>> GetListAsync(
+       HigherYearRequestFilterDto filter);
     }
 }

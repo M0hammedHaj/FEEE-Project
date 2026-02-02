@@ -34,7 +34,7 @@ builder.Services.AddScoped<ListOldStudentsService>();
 builder.Services.AddScoped<GetOldStudentByIdService>();
 
 builder.Services.AddScoped<CreateHigherYearRequestService>();
-builder.Services.AddScoped<GetHigherYearRequestsService>();
+builder.Services.AddScoped<GetAllHigherYearRequestsService>();
 builder.Services.AddScoped<GetHigherYearRequestByIdUseCase>();
 builder.Services.AddScoped<UpdateHigherYearRequestService>();
 builder.Services.AddScoped<CancelHigherYearRequestService>();

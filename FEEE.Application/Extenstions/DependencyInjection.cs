@@ -2,7 +2,9 @@
 using FEEE.Application.UseCases.City.GetCityById;
 using FEEE.Application.UseCases.City.ListCities;
 using FEEE.Application.UseCases.City.UpdateCity;
+using FEEE.Application.UseCases.HigherYearRequests.CancelHigherYearRequestService;
 using FEEE.Application.UseCases.HigherYearRequests.CreateHigherYearRequestServices;
+using FEEE.Application.UseCases.HigherYearRequests.GetFilterHigherYearRequestListService;
 using FEEE.Application.UseCases.HigherYearRequests.GetHigherYearRequestByIdUseCase;
 using FEEE.Application.UseCases.HigherYearRequests.GetHigherYearRequestsService;
 using FEEE.Application.UseCases.OperationType.CreateOperationType;
@@ -132,8 +134,10 @@ namespace FEEE.Application.Extensions
             services.AddScoped<GetAllSubjectsService>();
 
             services.AddScoped<CreateHigherYearRequestService>();
-            services.AddScoped<GetHigherYearRequestsService>();
+            services.AddScoped<GetAllHigherYearRequestsService>();
             services.AddScoped<GetHigherYearRequestByIdUseCase>();
+            services.AddScoped<GetFilterHigherYearRequestListService>();
+            services.AddScoped<CancelHigherYearRequestService>();
             return services;
         }
 

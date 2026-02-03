@@ -54,6 +54,7 @@ public class HigherYearRequestRepository : IHigherYearRequestRepository
             .Include(x => x.Student)
             .Include(x => x.Section)
             .Include(x => x.Year)
+            .Include(x => x.Semester)
             .OrderByDescending(x => x.CreatedAt)
             .Select(x => new HigherYearRequestListItemDto
             {
@@ -63,7 +64,8 @@ public class HigherYearRequestRepository : IHigherYearRequestRepository
                 Section = x.Section.Name,
                 Year = x.Year.Name,
                 Status = x.Status.ToString().ToUpper(),
-                RequestDate = x.CreatedAt.Date
+                RequestDate = x.CreatedAt.Date,
+                Semester = x.Semester.Name
             })
             .ToListAsync();
     }
@@ -200,6 +202,7 @@ public class HigherYearRequestRepository : IHigherYearRequestRepository
             .Include(x => x.Student)
             .Include(x => x.Section)
             .Include(x => x.Year)
+            .Include(x => x.Semester)
             .AsQueryable();
 
         if (filter.SectionId.HasValue)
@@ -253,7 +256,9 @@ public class HigherYearRequestRepository : IHigherYearRequestRepository
                 Year = x.Year.Name,
                 Status = x.Status.ToString(),
                 RequestDate = x.CreatedAt,
-                Date = x.CreatedAt.Date
+                Date = x.CreatedAt.Date,
+                Semester = x.Semester.Name
+
             })
             .ToListAsync();
     }

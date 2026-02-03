@@ -14,6 +14,7 @@ namespace FEEE.Application.DTOs.HigherYearRequests
         public string Section { get; set; } = string.Empty;
         public string Year { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
+        public string Semester { get; set; }
         public DateTime? Date { get; set; }
         public DateTime RequestDate { get; set; }
     }

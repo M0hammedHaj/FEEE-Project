@@ -11,7 +11,7 @@ public partial class StudentArchive
 
     public int StudentId { get; set; }
 
-    public int OperationTypeId { get; set; }
+    public int OperationType { get; set; }
 
     public DateTime ArchiveDate { get; set; }
 

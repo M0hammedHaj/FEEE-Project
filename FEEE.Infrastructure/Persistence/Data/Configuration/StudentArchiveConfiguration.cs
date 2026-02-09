@@ -21,7 +21,7 @@ namespace FEEE.Infrastructure.Persistence.Data.Configuration
             entity.Property(e => e.UserId).HasColumnName("UserID");
 
             entity.HasOne(d => d.OperationTypeNavigation).WithMany(p => p.StudentArchives)
-                .HasForeignKey(d => d.OperationTypeId)
+                .HasForeignKey(d => d.OperationType)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_StudentArchive_OperationTypes");
 

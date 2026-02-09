@@ -29,7 +29,7 @@ namespace FEEE.Infrastructure.Persistence.Repositories
                     StudentArchiveId = sa.StudentArchiveId,
                     ArchiveNumber = sa.ArchiveNumber,
                     StudentId = sa.StudentId,
-                    OperationType = sa.OperationTypeId,
+                    OperationType = sa.OperationType,
                     ArchiveDate = sa.ArchiveDate,
                     Notes = sa.Notes,
                     UserId = sa.UserId
@@ -46,7 +46,7 @@ namespace FEEE.Infrastructure.Persistence.Repositories
                     StudentArchiveId = x.StudentArchiveId,
                     ArchiveNumber = x.ArchiveNumber,
                     StudentId = x.StudentId,
-                    OperationType = x.OperationTypeId,
+                    OperationType = x.OperationType,
                     ArchiveDate = x.ArchiveDate,
                     Notes = x.Notes,
                     UserId = x.UserId
@@ -64,7 +64,7 @@ namespace FEEE.Infrastructure.Persistence.Repositories
                     StudentArchiveId = x.StudentArchiveId,
                     ArchiveNumber = x.ArchiveNumber,
                     StudentId = x.StudentId,
-                    OperationType = x.OperationTypeId,
+                    OperationType = x.OperationType,
                     ArchiveDate = x.ArchiveDate,
                     Notes = x.Notes,
                     UserId = x.UserId
@@ -79,7 +79,7 @@ namespace FEEE.Infrastructure.Persistence.Repositories
             {
                 ArchiveNumber = model.ArchiveNumber,
                 StudentId = model.StudentId,
-                OperationTypeId = model.OperationType,
+                OperationType = model.OperationType,
                 ArchiveDate = model.ArchiveDate,
                 Notes = model.Notes,
                 UserId = model.UserId
@@ -92,7 +92,7 @@ namespace FEEE.Infrastructure.Persistence.Repositories
         public async Task<List<StudentArchiveListResponse>> GetByOperationTypeAsync(int operationTypeId)
         {
             return await _context.StudentArchives
-                .Where(x => x.OperationTypeId == operationTypeId)
+                .Where(x => x.OperationType  == operationTypeId)
                 .Select(x => new StudentArchiveListResponse
                 {
                     ArchiveId = x.StudentArchiveId,

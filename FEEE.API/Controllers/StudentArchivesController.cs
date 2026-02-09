@@ -1,5 +1,6 @@
 ﻿using FEEE.Application.DTOs.StudentArchive;
 using FEEE.Application.UseCases.StudentArchive.CreateStudentArchive;
+using FEEE.Application.UseCases.StudentArchive.GetAllStudentsArchive;
 using FEEE.Application.UseCases.StudentArchive.GetByOperationType;
 using FEEE.Application.UseCases.StudentArchive.GetStudentArchivesByStudentId;
 using Microsoft.AspNetCore.Mvc;
@@ -13,16 +14,17 @@ namespace FEEE.API.Controllers
         private readonly CreateStudentArchiveService _create;
         private readonly GetStudentArchivesByStudentIdService _getById;
         private readonly GetStudentArchiveByOperationTypeService _service;
-
+        private readonly GetAllStudentsArchivesService _list;
         public StudentArchivesController(
             CreateStudentArchiveService create,
             GetStudentArchivesByStudentIdService getById,
-            GetStudentArchiveByOperationTypeService service
-            )
+            GetStudentArchiveByOperationTypeService service,
+           GetAllStudentsArchivesService list )
         {
             _create = create;
             _getById = getById;
             _service = service;
+            _list = list;
         }
 
         [HttpPost]
@@ -32,19 +34,19 @@ namespace FEEE.API.Controllers
             return Ok(id);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}StudentID")]
         public async Task<IActionResult> GetById(int id)
         {
             var result = await _getById.ExecuteAsync(id);
             return Ok(result);
         }
 
-        //[HttpGet("all")]
-        //public async Task<IActionResult> GetAll()
-        //{
-        //    var result = await _list.ExecuteAsync();
-        //    return Ok(result);
-        //}
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _list.ExecuteAsync();
+            return Ok(result);
+        }
         [HttpGet("by-operation")]
         public async Task<IActionResult> Get([FromQuery] int operationTypeId)
         {

@@ -21,20 +21,23 @@ namespace FEEE.Infrastructure.Persistence.Repositories
             _context = context;
         }
 
-        public async Task<List<StudentArchiveModel>> GetAllAsync()
+        public async Task<List<StudentArchiveModel>> GetAllAsync(int pageNumber, int pageSize)
         {
             return await _context.StudentArchives
-                .Select(sa => new StudentArchiveModel
-                {
-                    StudentArchiveId = sa.StudentArchiveId,
-                    ArchiveNumber = sa.ArchiveNumber,
-                    StudentId = sa.StudentId,
-                    OperationType = sa.OperationType,
-                    ArchiveDate = sa.ArchiveDate,
-                    Notes = sa.Notes,
-                    UserId = sa.UserId
-                })
-                .ToListAsync();
+        .OrderBy(sa => sa.StudentArchiveId)
+        .Skip((pageNumber - 1) * pageSize)
+        .Take(pageSize)
+        .Select(sa => new StudentArchiveModel
+        {
+            StudentArchiveId = sa.StudentArchiveId,
+            ArchiveNumber = sa.ArchiveNumber,
+            StudentId = sa.StudentId,
+            OperationType = sa.OperationType,
+            ArchiveDate = sa.ArchiveDate,
+            Notes = sa.Notes,
+            UserId = sa.UserId
+        })
+        .ToListAsync();
         }
 
         public async Task<StudentArchiveModel?> GetByIdAsync(int id)

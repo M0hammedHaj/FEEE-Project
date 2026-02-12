@@ -42,9 +42,9 @@ namespace FEEE.API.Controllers
         }
 
         [HttpGet("all")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(int pageNumber = 1, int pageSize = 30)
         {
-            var result = await _list.ExecuteAsync();
+            var result = await _list.ExecuteAsync(pageNumber, pageSize);
             return Ok(result);
         }
         [HttpGet("by-operation")]

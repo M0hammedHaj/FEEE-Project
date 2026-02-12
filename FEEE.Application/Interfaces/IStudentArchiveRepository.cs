@@ -10,7 +10,7 @@ namespace FEEE.Domain.Interfaces
 {
     public interface IStudentArchiveRepository
     {
-        Task<List<StudentArchiveModel>> GetAllAsync();
+        Task<List<StudentArchiveModel>> GetAllAsync(int pageNumber, int pageSize);
         Task<StudentArchiveModel?> GetByIdAsync(int id);
         Task<List<StudentArchiveModel>> GetByStudentIdAsync(int studentId);
         Task <int>AddAsync(StudentArchiveModel model);

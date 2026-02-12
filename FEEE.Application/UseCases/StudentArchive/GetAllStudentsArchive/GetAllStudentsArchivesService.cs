@@ -18,10 +18,11 @@ namespace FEEE.Application.UseCases.StudentArchive.GetAllStudentsArchive
             _repository = repository;
         }
 
-        public async Task<List<StudentArchiveResponse>> ExecuteAsync()
+        public async Task<List<StudentArchiveResponse>> ExecuteAsync(int pageNumber, int pageSize)
         {
-           var archives = await _repository.GetAllAsync();
+            var archives = await _repository.GetAllAsync(pageNumber, pageSize);
             return archives.Select(StudentArchiveMapper.ToResponse).ToList();
         }
+
     }
 }

@@ -17,9 +17,9 @@ namespace FEEE.Application.UseCases.StudentArchive.GetByOperationType
             _repo = repo;
         }
 
-        public async Task<List<StudentArchiveListResponse>> ExecuteAsync(int operationTypeId)
+        public async Task<List<StudentArchiveListResponse>> ExecuteAsync(int operationTypeId, int pageNumber, int pageSize)
         {
-            return await _repo.GetByOperationTypeAsync(operationTypeId);
+            return await _repo.GetByOperationTypeAsync(operationTypeId,  pageNumber,  pageSize);
         }
     }
 

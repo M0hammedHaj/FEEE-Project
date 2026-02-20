@@ -48,9 +48,9 @@ namespace FEEE.API.Controllers
             return Ok(result);
         }
         [HttpGet("by-operation")]
-        public async Task<IActionResult> Get([FromQuery] int operationTypeId)
+        public async Task<IActionResult> Get([FromQuery] int operationTypeId, int pageNumber = 1, int pageSize = 30)
         {
-            var result = await _service.ExecuteAsync(operationTypeId);
+            var result = await _service.ExecuteAsync(operationTypeId, pageNumber, pageSize);
             return Ok(result);
         }
 

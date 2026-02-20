@@ -1,13 +1,14 @@
-﻿using FEEE.Domain.Interfaces;
+﻿using FEEE.Application.DTOs.StudentArchive;
 using FEEE.Domain.Entities;
+using FEEE.Domain.Interfaces;
+using FEEE.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FEEE.Infrastructure.Persistence.Context;
-using FEEE.Application.DTOs.StudentArchive;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 
 namespace FEEE.Infrastructure.Persistence.Repositories
@@ -92,23 +93,32 @@ namespace FEEE.Infrastructure.Persistence.Repositories
             await _context.SaveChangesAsync();
             return entity.StudentArchiveId;
         }
-        public async Task<List<StudentArchiveListResponse>> GetByOperationTypeAsync(int operationTypeId)
+        public async Task<List<StudentArchiveListResponse>> GetByOperationTypeAsync(int operationTypeId, int pageNumber, int pageSize)
         {
-            return await _context.StudentArchives
-                .Where(x => x.OperationType  == operationTypeId)
-                .Select(x => new StudentArchiveListResponse
-                {
-                    ArchiveId = x.StudentArchiveId,
-                    StudentName = x.Student.FirstName + ""+ x.Student.LastName,
-                    UniversityNumber = x.Student.UniversityNumber,
-                    MinisterialNumber = x.Student.MinisterialNumber, 
-                    OperationType = x.OperationTypeNavigation.Name,
-                    
-                    CreatedAt = x.ArchiveDate,
-                })
-                .OrderByDescending(x => x.CreatedAt)
-                .ToListAsync();
-        }
+            var query = _context.StudentArchives
+     .Where(x => x.OperationType == operationTypeId);
 
+            var totalCount = await query.CountAsync();
+            var items = await query
+            .OrderBy(sa => sa.StudentArchiveId)
+             .Skip((pageNumber - 1) * pageSize)
+          .Take(pageSize)
+             .Select(x => new StudentArchiveListResponse
+             {
+        ArchiveId = x.StudentArchiveId,
+        StudentName = x.Student.FirstName + " " + x.Student.LastName,
+        UniversityNumber = x.Student.UniversityNumber,
+        MinisterialNumber = x.Student.MinisterialNumber,
+        OperationType = x.OperationTypeNavigation.Name,
+         CreatedAt = x.ArchiveDate,
+         totalCount = totalCount,
+         totalPages = (int)Math.Ceiling((double)totalCount / pageSize)
+             })
+    .OrderByDescending(x => x.CreatedAt)
+    .ToListAsync();
+            return items;
+         
+        }
+       
     }
 }

@@ -16,6 +16,8 @@ namespace FEEE.Application.DTOs.StudentArchive
 
         public string OperationType { get; set; } = null!;
         public DateTime CreatedAt { get; set; }
+        public int totalCount { get; set; }
+        public int totalPages { get; set; }
     }
 
 }

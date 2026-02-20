@@ -101,12 +101,14 @@ namespace FEEE.Infrastructure.Persistence.Repositories
             var totalCount = await query.CountAsync();
             var items = await query
             .OrderBy(sa => sa.StudentArchiveId)
+            
              .Skip((pageNumber - 1) * pageSize)
           .Take(pageSize)
              .Select(x => new StudentArchiveListResponse
              {
         ArchiveId = x.StudentArchiveId,
-        StudentName = x.Student.FirstName + " " + x.Student.LastName,
+        studentId = x.StudentId,
+               
         UniversityNumber = x.Student.UniversityNumber,
         MinisterialNumber = x.Student.MinisterialNumber,
         OperationType = x.OperationTypeNavigation.Name,

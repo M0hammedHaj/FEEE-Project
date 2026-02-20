@@ -9,8 +9,8 @@ namespace FEEE.Application.DTOs.StudentArchive
     public class StudentArchiveListResponse
     {
         public int ArchiveId { get; set; }
-
-        public string StudentName { get; set; } = null!;
+        public int studentId { get; set; }
+       
         public string UniversityNumber { get; set; } = null!;
         public string MinisterialNumber { get; set; } = null!; 
 

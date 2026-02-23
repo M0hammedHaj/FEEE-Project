@@ -56,6 +56,7 @@ namespace FEEE.API.Controllers
             var result = await _list.ExecuteAsync();
             return Ok(result);
         }
+        
     }
 
 }

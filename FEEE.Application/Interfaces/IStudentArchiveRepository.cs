@@ -15,7 +15,7 @@ namespace FEEE.Domain.Interfaces
         Task<List<StudentArchiveModel>> GetByStudentIdAsync(int studentId);
         Task <int>AddAsync(StudentArchiveModel model);
         Task<List<StudentArchiveListResponse>> GetByOperationTypeAsync(int operationTypeId, int pageNumber, int pageSize);
-       
+        Task<List<StudentArchiveListResponse>> GetByOperationTypeAsync(int operationTypeId);
 
     }
 

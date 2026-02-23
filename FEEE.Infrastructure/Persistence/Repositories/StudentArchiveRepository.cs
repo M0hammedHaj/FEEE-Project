@@ -121,6 +121,27 @@ namespace FEEE.Infrastructure.Persistence.Repositories
             return items;
          
         }
-       
+        public async Task<List<StudentArchiveListResponse>> GetByOperationTypeAsync(int operationTypeId)
+        {
+            var query = _context.StudentArchives
+     .Where(x => x.OperationType == operationTypeId)
+     .OrderBy(x => x.OperationType)
+     .Select(x => new StudentArchiveListResponse
+     {
+         ArchiveId = x.StudentArchiveId,
+         studentId = x.StudentId,
+
+         UniversityNumber = x.Student.UniversityNumber,
+         MinisterialNumber = x.Student.MinisterialNumber,
+         OperationType = x.OperationTypeNavigation.Name,
+         CreatedAt = x.ArchiveDate,
+
+     });
+            return await query.ToListAsync();
+
+
+
+
+        }
     }
 }

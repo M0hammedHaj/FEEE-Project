@@ -11,6 +11,7 @@ using FEEE.Infrastructure.Extensions;
 using FEEE.Infrastructure.Persistence.Context;
 using FEEE.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
+using QuestPDF.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,7 +42,7 @@ builder.Services.AddScoped<CancelHigherYearRequestService>();
 
 
 builder.Services.AddInfrastructure(builder.Configuration);
-
+QuestPDF.Settings.License = LicenseType.Community;
 var app = builder.Build();
 
 // Middleware

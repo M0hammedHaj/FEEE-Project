@@ -1,4 +1,5 @@
 ﻿using FEEE.Application.DTOs.StudentArchive;
+using FEEE.Application.UseCases.Print;
 using FEEE.Application.UseCases.StudentArchive.CreateStudentArchive;
 using FEEE.Application.UseCases.StudentArchive.GetAllStudentsArchive;
 using FEEE.Application.UseCases.StudentArchive.GetByOperationType;
@@ -15,16 +16,20 @@ namespace FEEE.API.Controllers
         private readonly GetStudentArchivesByStudentIdService _getById;
         private readonly GetStudentArchiveByOperationTypeService _service;
         private readonly GetAllStudentsArchivesService _list;
+        private readonly GenerateInvoicePdfUseCase _generatePdf;
+
         public StudentArchivesController(
             CreateStudentArchiveService create,
             GetStudentArchivesByStudentIdService getById,
             GetStudentArchiveByOperationTypeService service,
-           GetAllStudentsArchivesService list )
+            GetAllStudentsArchivesService list,
+            GenerateInvoicePdfUseCase generateInvoicePdfUse)
         {
             _create = create;
             _getById = getById;
             _service = service;
             _list = list;
+            _generatePdf = generateInvoicePdfUse;
         }
 
         [HttpPost]
@@ -59,6 +64,17 @@ namespace FEEE.API.Controllers
             var result = await _service.ExecuteAsync(operationTypeId);
             return Ok(result);
         }
+        [HttpGet("{id}/print")]
+        public async Task<IActionResult> Print(int id)
+        {
+            var pdfBytes = await _generatePdf.ExecuteAsync(id);
+
+            return File(
+                pdfBytes,
+                "application/pdf",
+                $"StudentArchive_{id}.pdf");
+        }
+
     }
 
 

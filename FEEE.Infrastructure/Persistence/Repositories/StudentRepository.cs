@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace FEEE.Infrastructure.Persistence.Repositories
@@ -153,6 +154,104 @@ namespace FEEE.Infrastructure.Persistence.Repositories
         {
             return await _context.Students.AnyAsync(s => s.StudentId == id);
         }
+
+
+        public async Task<List<StudentModel>> SearchStudentsAsync(string searchTerm, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm))
+                return new List<StudentModel>();
+
+            var normalizedSearch = NormalizeInput(searchTerm);
+            var parts = normalizedSearch.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+            IQueryable<Student> query = _context.Students
+                .AsNoTracking();
+
+            // أول شي: بحث بالرقم الجامعي أو الوزاري
+            query = query.Where(s =>
+                s.UniversityNumber == normalizedSearch ||
+                s.MinisterialNumber == normalizedSearch);
+
+            // إذا كان اسمين: الأول + الأخير
+            if (parts.Length == 2)
+            {
+                string firstName = parts[0];
+                string lastName = parts[1];
+
+                query = query.Union(
+                    _context.Students
+                        .AsNoTracking()
+                        .Where(s =>
+                            s.FirstName != null &&
+                            s.LastName != null &&
+                            s.FirstName.Trim() == firstName &&
+                            s.LastName.Trim() == lastName)
+                );
+            }
+
+            // إذا كان 3 أسماء: الأول + الأب + الأخير أو الأول + الأم + الأخير
+            else if (parts.Length == 3)
+            {
+                string firstName = parts[0];
+                string middleName = parts[1];
+                string lastName = parts[2];
+
+                query = query.Union(
+                    _context.Students
+                        .AsNoTracking()
+                        .Where(s =>
+                            s.FirstName != null &&
+                            s.LastName != null &&
+                            s.FirstName.Trim() == firstName &&
+                            s.LastName.Trim() == lastName &&
+                            (
+                                (s.FatherName != null && s.FatherName.Trim() == middleName) ||
+                                (s.MotherName != null && s.MotherName.Trim() == middleName)
+                            ))
+                );
+            }
+
+            // إذا أكثر من 3 كلمات، حالياً منرجّع فاضي
+            else if (parts.Length > 3)
+            {
+                return new List<StudentModel>();
+            }
+
+            return await query
+                .Select(s => new StudentModel
+                {
+                    StudentId = s.StudentId,
+                    UniversityNumber = s.UniversityNumber,
+                    MinisterialNumber = s.MinisterialNumber,
+                    FirstName = s.FirstName,
+                    LastName = s.LastName,
+                    FatherName = s.FatherName,
+                    MotherName = s.MotherName,
+                    BirthDate = s.BirthDate,
+                    CityId = s.CityId,
+                    SectionId = s.SectionId,
+                    YearId = s.YearId,
+                    Status =(StudentStatus)s.Status
+                })
+                .Distinct()
+                .ToListAsync(cancellationToken);
+        }
+
+        private static string NormalizeInput(string input)
+        {
+            input = input.Trim();
+            input = Regex.Replace(input, @"\s+", " ");
+            return input;
+        }
+
+
+
+
+
+
+
+
+
 
     }
 }

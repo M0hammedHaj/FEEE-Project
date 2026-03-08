@@ -143,5 +143,20 @@ namespace FEEE.Infrastructure.Persistence.Repositories
 
 
         }
+        public async Task<StudentArchivePrintDto?> GetPrintDetailsAsync(int id)
+        {
+            return await _context.StudentArchives
+                .Where(sa => sa.StudentArchiveId == id)
+                .Select(sa => new StudentArchivePrintDto
+                {
+                    ArchiveNumber = sa.ArchiveNumber,
+                    UniversityNumber = sa.Student.UniversityNumber,
+                    MinisterialNumber = sa.Student.MinisterialNumber,
+                    OperationTypeName = sa.OperationTypeNavigation.Name,
+                    ArchiveDate = sa.ArchiveDate,
+                    Notes = sa.Notes
+                })
+                .FirstOrDefaultAsync();
+        }
     }
 }

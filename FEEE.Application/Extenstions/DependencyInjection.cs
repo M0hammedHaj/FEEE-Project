@@ -1,4 +1,6 @@
-﻿using FEEE.Application.UseCases.City.CreateCity;
+﻿using FEEE.Application.DTOs.StudentArchive;
+using FEEE.Application.Interfaces;
+using FEEE.Application.UseCases.City.CreateCity;
 using FEEE.Application.UseCases.City.GetCityById;
 using FEEE.Application.UseCases.City.ListCities;
 using FEEE.Application.UseCases.City.UpdateCity;
@@ -11,6 +13,7 @@ using FEEE.Application.UseCases.OperationType.CreateOperationType;
 using FEEE.Application.UseCases.OperationType.GetOperationTypeById;
 using FEEE.Application.UseCases.OperationType.GetOperationTypes;
 using FEEE.Application.UseCases.OperationType.UpdateOperationType;
+using FEEE.Application.UseCases.Print;
 using FEEE.Application.UseCases.Section.CreateSection;
 using FEEE.Application.UseCases.Section.GetSectionById;
 using FEEE.Application.UseCases.Section.ListSections;
@@ -109,6 +112,7 @@ namespace FEEE.Application.Extensions
             services.AddScoped<ListStudentsService>();
             services.AddScoped<ArchiveStudentService>();
             services.AddScoped<SearchStudentsService>();
+            services.AddScoped<SearchStudentsUseCase>();
 
             // StudentArchive
             services.AddScoped<CreateStudentArchiveService>();
@@ -138,6 +142,12 @@ namespace FEEE.Application.Extensions
             services.AddScoped<GetHigherYearRequestByIdUseCase>();
             services.AddScoped<GetFilterHigherYearRequestListService>();
             services.AddScoped<CancelHigherYearRequestService>();
+
+
+
+            //services.AddScoped<IGenerateInvoicePdfUseCase, GenerateInvoicePdfUseCase>();
+            services.AddScoped<GenerateInvoicePdfUseCase>();
+            services.AddScoped<IPdfGenerator<StudentArchivePrintDto>, PDFPrintHigherYear>();
             return services;
         }
 

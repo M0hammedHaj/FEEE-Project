@@ -79,7 +79,10 @@ namespace FEEE.Application.Mappings.Students
 
             };
         }
-
+        public static List<StudentResponse> ToResponseList(IEnumerable<StudentModel> students)
+        {
+            return students.Select(ToResponse).ToList();
+        }
 
     }
 }

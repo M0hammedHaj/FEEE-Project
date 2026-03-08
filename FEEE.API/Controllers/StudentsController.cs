@@ -18,20 +18,21 @@ namespace FEEE.API.Controllers
         private readonly GetStudentByIdService _getById;
         private readonly ListStudentsService _list;
         private readonly MediatR.IMediator _mediator;
-
+        private readonly SearchStudentsUseCase _searchStudentsUseCase;
         public StudentsController(
             CreateStudentService createStudent,
             UpdateStudentService updateStudent,
             GetStudentByIdService getById,
             ListStudentsService list,
-            MediatR.IMediator mediator)
+            MediatR.IMediator mediator
+            ,SearchStudentsUseCase _searchStudentsUsecase)
         {
             _createStudent = createStudent;
             _updateStudent = updateStudent;
             _getById = getById;
             _list = list;
             _mediator = mediator;
-
+            _searchStudentsUseCase = _searchStudentsUsecase;
         }
 
         [HttpPost]
@@ -76,11 +77,18 @@ namespace FEEE.API.Controllers
 
             return Ok(result);
         }
+        [HttpGet("searchFullInfo")]
+        public async Task<IActionResult> Search(
+           [FromQuery] string term,
+           CancellationToken cancellationToken)
+        {
+            var result = await _searchStudentsUseCase.ExecuteAsync(term, cancellationToken);
+            return Ok(result);
+        }
 
 
 
 
-        
 
     }
 

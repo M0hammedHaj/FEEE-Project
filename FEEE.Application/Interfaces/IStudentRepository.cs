@@ -19,5 +19,7 @@ namespace FEEE.Domain.Repositories
         Task<List<StudentSearchResponseDto>> SearchAsync(
             string? universityNumber,
             string? fullName);
+        Task<List<StudentModel>> SearchStudentsAsync(string searchTerm, CancellationToken cancellationToken = default);
+
     }
 }

@@ -206,45 +206,50 @@ public class HigherYearRequestRepository : IHigherYearRequestRepository
             .AsQueryable();
 
         if (filter.SectionId.HasValue)
-            query = query.Where(x => x.SectionId == filter.SectionId);
+            query = query.Where(x => x.SectionId == filter.SectionId).OrderBy(x=> x.SectionId);
 
         if (filter.YearId.HasValue)
-            query = query.Where(x => x.YearId == filter.YearId);
+            query = query.Where(x => x.YearId == filter.YearId).OrderBy(x=> x.YearId);
 
         if (filter.Status.HasValue)
-            query = query.Where(x => x.Status == filter.Status.Value);
+            query = query.Where(x => x.Status == filter.Status.Value).OrderBy(x=>x.Status);
 
         if (!string.IsNullOrEmpty(filter.StudentName))
             query = query.Where(x =>
                 (x.Student.FirstName + " " + x.Student.LastName)
-                .Contains(filter.StudentName));
+                .Contains(filter.StudentName))
+                .OrderBy(x => x.Student.FirstName)
+                .ThenBy(x => x.Student.LastName);
 
         if (!string.IsNullOrEmpty(filter.UniversityNumber))
             query = query.Where(x =>
-                x.Student.UniversityNumber.Contains(filter.UniversityNumber));
+                x.Student.UniversityNumber.Contains(filter.UniversityNumber))
+                .OrderBy(x => x.Student.UniversityNumber);
 
         if (filter.FromDate.HasValue)
         {
-            var from = filter.FromDate.Value.Date; 
+            var from = filter.FromDate.Value.Date;
             query = query.Where(x => x.CreatedAt >= from);
         }
 
         if (filter.ToDate.HasValue)
         {
-            var to = filter.ToDate.Value.Date.AddDays(1); 
+            var to = filter.ToDate.Value.Date.AddDays(1);
             query = query.Where(x => x.CreatedAt < to);
         }
+
         if (filter.Date.HasValue)
         {
             var dayStart = filter.Date.Value.Date;
             var dayEnd = dayStart.AddDays(1);
 
             query = query.Where(x =>
-                x.CreatedAt  >= dayStart &&
+                x.CreatedAt >= dayStart &&
                 x.CreatedAt < dayEnd
             );
         }
 
+       
 
         return await query
             .Select(x => new HigherYearRequestListItemDto

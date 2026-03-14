@@ -24,6 +24,8 @@ namespace FEEE.Application.DTOs.HigherYearRequests
     public class StudentInfoDto
     {
         public string FullName { get; set; } = null!;
+        public string FatherName { get; set; } = null!;
+        public string MotherName { get; set; }
         public string UniversityNumber { get; set; } = null!;
         public DateTime? BirthDate { get; set; }
     }

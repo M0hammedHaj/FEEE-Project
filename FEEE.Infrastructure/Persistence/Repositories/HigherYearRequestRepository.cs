@@ -97,7 +97,9 @@ public class HigherYearRequestRepository : IHigherYearRequestRepository
             {
                 FullName = (request.Student.FirstName + " " + request.Student.LastName).Trim(),
                 UniversityNumber = request.Student.UniversityNumber,
-                BirthDate = request.Student.BirthDate
+                BirthDate = request.Student.BirthDate,
+                FatherName = request.Student.FatherName,
+                MotherName = request.Student.MotherName
             },
 
             Section = new LookupDto { Id = request.SectionId, Name = request.Section.Name },
